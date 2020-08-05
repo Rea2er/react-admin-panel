@@ -1,26 +1,17 @@
 import React from "react";
-import "./App.css";
-import { message, Button, Space } from "antd";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-const success = () => {
-  message.success("This is a success message");
-};
-
-const error = () => {
-  message.error("This is an error message");
-};
-
-const warning = () => {
-  message.warning("This is a warning message");
-};
+import Login from "./pages/login/Login";
+import Admin from "./pages/admin/Admin";
 
 const App = () => {
   return (
-    <Space>
-      <Button onClick={success}>Success</Button>
-      <Button onClick={error}>Error</Button>
-      <Button onClick={warning}>Warning</Button>
-    </Space>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/" component={Admin} />
+      </Switch>
+    </BrowserRouter>
   );
 };
 
