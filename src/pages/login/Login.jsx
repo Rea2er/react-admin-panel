@@ -29,7 +29,7 @@ class Login extends Component {
   render() {
     //check the user login state
     const user = MemoryUtils.user;
-    if (!user || !user._id) {
+    if (user._id) {
       return <Redirect to="/" />;
     }
 
