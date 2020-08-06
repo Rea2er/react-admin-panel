@@ -1,9 +1,17 @@
 import React, { Component } from "react";
-// import { Redirect } from "react-router-dom";
+import { Redirect, Switch, Route } from "react-router-dom";
 // import MemoryUtils from "../../utils/MemoryUtils";
 import { Layout } from "antd";
 import LeftNav from "../../components/left-nav/LeftNav";
 import Header from "../../components/header/Header";
+import Home from "../home/Home";
+import Categories from "../categories/Categories";
+import Bar from "../charts/Bar";
+import Line from "../charts/Line";
+import Pie from "../charts/Pie";
+import Products from "../products/Products";
+import Roles from "../roles/Roles";
+import Users from "../users/Users";
 
 const { Footer, Sider, Content } = Layout;
 
@@ -22,7 +30,19 @@ class Admin extends Component {
         </Sider>
         <Layout>
           <Header>Header</Header>
-          <Content style={{ backgroundColor: "#FFF" }}>Content</Content>
+          <Content style={{ backgroundColor: "#FFF" }}>
+            <Switch>
+              <Route path="/home" component={Home} />
+              <Route path="/categories" component={Categories} />
+              <Route path="/products" component={Products} />
+              <Route path="/users" component={Users} />
+              <Route path="/roles" component={Roles} />
+              <Route path="/bar" component={Bar} />
+              <Route path="/line" component={Line} />
+              <Route path="/pie" component={Pie} />
+              <Redirect to="/home" />
+            </Switch>
+          </Content>
           <Footer style={{ textAlign: "center", color: "#ccc" }}>Footer</Footer>
         </Layout>
       </Layout>
