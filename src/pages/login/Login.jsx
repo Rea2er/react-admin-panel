@@ -1,11 +1,23 @@
 import React, { Component } from "react";
 import "./Login.less";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { reqLogin } from "../../api";
+import MemoryUtils from "../../utils/MemoryUtils";
 
-export class Login extends Component {
-  onFinish = (values) => {
-    console.log("Received values of form: ", values);
+class Login extends Component {
+  onFinish = async (values) => {
+    const { username, password } = values;
+
+    const response = await reqLogin(username, password);
+    if (response.status === 0) {
+      message.success("log in success");
+      //save the user to memory
+      MemoryUtils.user = response;
+      this.props.history.replace("/");
+    } else {
+      message.error(response.msg);
+    }
   };
 
   render() {
@@ -22,7 +34,17 @@ export class Login extends Component {
             <Form.Item
               name="username"
               rules={[
-                { required: true, message: "Please input your Username!" },
+                {
+                  required: true,
+                  whitespace: true,
+                  message: "Please input your Username!",
+                },
+                { min: 4, message: "At least 4 character long!" },
+                { max: 12, message: "No more than 12 character long!" },
+                {
+                  pattern: /^[a-zA-Z0-9_]+$/,
+                  message: "Not special character!",
+                },
               ]}
             >
               <Input
