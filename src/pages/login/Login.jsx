@@ -4,6 +4,8 @@ import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { reqLogin } from "../../api";
 import MemoryUtils from "../../utils/MemoryUtils";
+import StorageUtils from "../../utils/StorageUtils";
+import { Redirect } from "react-router-dom";
 
 class Login extends Component {
   onFinish = async (values) => {
@@ -12,8 +14,12 @@ class Login extends Component {
     const response = await reqLogin(username, password);
     if (response.status === 0) {
       message.success("log in success");
+
+      const user = response.data;
       //save the user to memory
-      MemoryUtils.user = response;
+      MemoryUtils.user = user;
+      //save the user to localstorage
+      StorageUtils.saveUser(user);
       this.props.history.replace("/");
     } else {
       message.error(response.msg);
@@ -21,6 +27,12 @@ class Login extends Component {
   };
 
   render() {
+    //check the user login state
+    const user = MemoryUtils.user;
+    if (!user || !user._id) {
+      return <Redirect to="/" />;
+    }
+
     return (
       <div className="login">
         <header className="login-header"></header>
